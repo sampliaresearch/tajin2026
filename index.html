@@ -11,6 +11,7 @@
       --s-red: #E8001D; --s-red-dark: #B8001A; --s-red-light: #FDEDEF;
       --s-black: #1A1A1A; --s-gray: #6B6B6B; --s-gray-light: #F5F5F5;
       --s-border: #EBEBEB; --s-white: #FFFFFF; --radius: 12px; --radius-sm: 8px;
+      --b1: #1F3A5F; --b2: #2E5490; --b3: #3D6EB8; --b4: #6A9BD1; --b5: #97BDE6; --b6: #C3D9F3; --b7: #DDEAF8;
     }
     body { font-family: 'Figtree', sans-serif; background: var(--s-gray-light); min-height: 100vh; padding: 0 0 2rem; }
     .header { background: var(--s-white); border-bottom: 1px solid var(--s-border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 10; }
@@ -24,39 +25,67 @@
     .title-bar h1 { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
     .title-bar p { color: rgba(255,255,255,0.75); font-size: 12px; }
     .content { padding: 1.25rem; max-width: 1100px; margin: 0 auto; }
+
     .filter-bar { background: var(--s-white); border: 1px solid var(--s-border); border-radius: var(--radius); padding: 0.75rem 1.25rem; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .filter-label { font-size: 12px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
     .filter-select { font-family: 'Figtree', sans-serif; font-size: 13px; font-weight: 500; color: var(--s-black); background: var(--s-gray-light); border: 1px solid var(--s-border); border-radius: var(--radius-sm); padding: 6px 30px 6px 10px; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6B6B' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; min-width: 160px; }
     .filter-select:focus { outline: none; border-color: var(--s-red); }
     .filter-sep { width: 1px; height: 24px; background: var(--s-border); }
-    .filter-badge { font-size: 11px; font-weight: 600; color: var(--s-red-dark); background: var(--s-red-light); padding: 3px 8px; border-radius: 20px; white-space: nowrap; margin-left: auto; }
+    .encuestados-badge { font-size: 13px; font-weight: 700; color: var(--s-black); margin-left: auto; }
+    .encuestados-badge span { color: var(--s-red); }
+
     .kpi-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
     .kpi { background: var(--s-white); border: 1px solid var(--s-border); border-radius: var(--radius); padding: 1rem 1.25rem; position: relative; overflow: hidden; }
     .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--s-red); }
     .kpi-label { font-size: 11px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
     .kpi-value { font-size: 28px; font-weight: 900; color: var(--s-black); line-height: 1; letter-spacing: -1px; }
     .kpi-sub { font-size: 11px; color: var(--s-gray); margin-top: 4px; }
+
     .section-label { font-size: 11px; font-weight: 700; color: var(--s-red); text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0 8px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 6px; }
     .card { background: var(--s-white); border: 1px solid var(--s-border); border-radius: var(--radius); padding: 1rem 1.25rem; }
     .card-title { font-size: 12px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 6px; }
     .card-title::before { content: ''; display: inline-block; width: 3px; height: 12px; background: var(--s-red); border-radius: 2px; flex-shrink: 0; }
     .chart-wrap { position: relative; width: 100%; }
-    .h150{height:150px;}.h180{height:180px;}.h220{height:220px;}
+    .h150{height:150px;} .h180{height:180px;} .h220{height:220px;} .h240{height:240px;}
+
+    /* Mini stat cards for ratings */
+    .mini-stat { background: var(--s-gray-light); border-radius: var(--radius-sm); padding: 8px 10px; text-align: center; }
+    .mini-stat-label { font-size: 9px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
+    .mini-stat-value { font-size: 18px; font-weight: 900; color: var(--s-black); line-height: 1; }
+    .mini-stat-value.blue { color: var(--b2); }
+    .mini-stat-value.green { color: #1a7a3a; }
+    .mini-stat-value.orange { color: #b85c00; }
+    .mini-stat-value.red-dark { color: var(--s-red-dark); }
+
+    /* Gender donut */
     .gender-donut-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 150px; gap: 10px; }
     .donut-container { position: relative; width: 100px; height: 100px; }
     .donut-container canvas { position: absolute; top: 0; left: 0; }
     .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
     .donut-pct { font-size: 20px; font-weight: 900; color: #1A1A1A; line-height: 1; }
     .donut-lbl { font-size: 9px; color: #6B6B6B; margin-top: 1px; }
-    .gender-legend { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .gender-legend { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; }
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Conocia donut */
+    .conocia-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 150px; justify-content: center; }
+    .conocia-donut { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .conocia-donut canvas { position: absolute; top:0; left:0; }
+    .conocia-center { position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+    .conocia-pct { font-size: 18px; font-weight: 900; color: #1A1A1A; line-height: 1; }
+    .conocia-lbl { font-size: 8px; color: #6B6B6B; margin-top: 1px; line-height: 1.2; }
+    .conocia-legend { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+
     .footer { text-align: center; font-size: 11px; color: var(--s-gray); margin-top: 1rem; }
+
     @media (max-width: 700px) {
       .kpi-row { grid-template-columns: 1fr 1fr; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
       .header { padding: 0 1rem; } .content { padding: 1rem; } .last-update { display: none; }
     }
   </style>
@@ -79,35 +108,38 @@
   </div>
 
   <div class="content">
+
+    <!-- FILTROS -->
     <div class="filter-bar">
       <span class="filter-label">Género</span>
       <select class="filter-select" id="fGender">
         <option value="">Todos</option>
         <option value="F">Femenino (F)</option>
         <option value="M">Masculino (M)</option>
-        <option value="NA">No especifica (NA)</option>
-        <option value="NB">No binario (NB)</option>
       </select>
       <div class="filter-sep"></div>
       <span class="filter-label">Edad</span>
       <select class="filter-select" id="fAge">
         <option value="">Todos</option>
-        <option value="18-25">18–25</option>
-        <option value="26-35">26–35</option>
-        <option value="36-45">36–45</option>
-        <option value="46-55">46–55</option>
-        <option value="56+">56+</option>
+        <option value="-17">-17</option>
+        <option value="18-24">18–24</option>
+        <option value="25-34">25–34</option>
+        <option value="35-44">35–44</option>
+        <option value="45-54">45–54</option>
+        <option value="55-64">55–64</option>
       </select>
-      <span class="filter-badge" id="filterBadge">Cargando...</span>
+      <div class="encuestados-badge" id="encuestadosBadge">— encuestados</div>
     </div>
 
+    <!-- KPIs -->
     <div class="kpi-row">
       <div class="kpi"><div class="kpi-label">Respuestas</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">participantes</div></div>
       <div class="kpi"><div class="kpi-label">Conocían Tajín</div><div class="kpi-value" id="kpiKnew">—</div><div class="kpi-sub">% conocían la marca</div></div>
-      <div class="kpi"><div class="kpi-label">Nota Clásico</div><div class="kpi-value" id="kpiClasico">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
-      <div class="kpi"><div class="kpi-label">Nota Chamoy</div><div class="kpi-value" id="kpiChamoy">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
+      <div class="kpi"><div class="kpi-label">Nivel de agrado Clásico</div><div class="kpi-value" id="kpiClasico">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
+      <div class="kpi"><div class="kpi-label">Nivel de agrado Chamoy</div><div class="kpi-value" id="kpiChamoy">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
     </div>
 
+    <!-- PERFIL -->
     <div class="section-label">Perfil del participante</div>
     <div class="grid-3">
       <div class="card">
@@ -121,22 +153,62 @@
         </div>
       </div>
       <div class="card"><div class="card-title">Rango de edad</div><div class="chart-wrap h150"><canvas id="cEdad"></canvas></div></div>
-      <div class="card"><div class="card-title">¿Conocías la marca Tajín?</div><div class="chart-wrap h150"><canvas id="cConocia"></canvas></div></div>
+      <div class="card">
+        <div class="card-title">¿Conocías la marca Tajín?</div>
+        <div class="conocia-wrap">
+          <div class="conocia-donut">
+            <canvas id="cConocia" width="100" height="100"></canvas>
+            <div class="conocia-center"><div class="conocia-pct" id="conociaNoP">—</div><div class="conocia-lbl">No la<br>conocía</div></div>
+          </div>
+          <div class="conocia-legend" id="conociaLegend"></div>
+        </div>
+      </div>
     </div>
 
+    <!-- HÁBITOS -->
     <div class="section-label">Hábitos de consumo</div>
     <div class="grid-2">
       <div class="card"><div class="card-title">¿Cada cuánto consumes picante?</div><div class="chart-wrap h180"><canvas id="cPicante"></canvas></div></div>
       <div class="card"><div class="card-title">¿Cómo has consumido Tajín?</div><div class="chart-wrap h180"><canvas id="cConsumo"></canvas></div></div>
     </div>
 
+    <!-- VALORACIONES -->
     <div class="section-label">Valoraciones</div>
-    <div class="grid-3">
-      <div class="card"><div class="card-title">Tajín Clásico</div><div class="chart-wrap h180"><canvas id="cGustoClasico"></canvas></div></div>
-      <div class="card"><div class="card-title">Tajín Chamoy</div><div class="chart-wrap h180"><canvas id="cGustoChamoy"></canvas></div></div>
-      <div class="card"><div class="card-title">Tajín Chile y Lima</div><div class="chart-wrap h180"><canvas id="cGustoLima"></canvas></div></div>
+
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title">Tajín Clásico</div>
+      <div class="grid-4" style="margin-bottom:10px;">
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mClaMedia">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mClaAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mClaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mClaBaja">—</div></div>
+      </div>
+      <div class="chart-wrap h150"><canvas id="cGustoClasico"></canvas></div>
     </div>
 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title">Tajín Chamoy</div>
+      <div class="grid-4" style="margin-bottom:10px;">
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mChamMedia">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mChamAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mChamMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mChamBaja">—</div></div>
+      </div>
+      <div class="chart-wrap h150"><canvas id="cGustoChamoy"></canvas></div>
+    </div>
+
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title">Tajín Chile y Lima</div>
+      <div class="grid-4" style="margin-bottom:10px;">
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mLimaMedia">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mLimaAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mLimaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mLimaBaja">—</div></div>
+      </div>
+      <div class="chart-wrap h150"><canvas id="cGustoLima"></canvas></div>
+    </div>
+
+    <!-- INTENCIÓN -->
     <div class="section-label">Intención de uso futuro</div>
     <div class="grid-3">
       <div class="card"><div class="card-title">Usaría Tajín Clásico…</div><div class="chart-wrap h220"><canvas id="cFutClasico"></canvas></div></div>
@@ -144,13 +216,14 @@
       <div class="card"><div class="card-title">Usaría Tajín Chile y Lima…</div><div class="chart-wrap h220"><canvas id="cFutLima"></canvas></div></div>
     </div>
 
+    <!-- OPINIONES -->
     <div class="section-label">Opiniones sobre Tajín Clásico</div>
     <div class="grid-2">
       <div class="card"><div class="card-title">¿Qué es lo que más te gusta?</div><div class="chart-wrap h220"><canvas id="cMasGusta"></canvas></div></div>
       <div class="card"><div class="card-title">¿Y lo que menos?</div><div class="chart-wrap h220"><canvas id="cMenosGusta"></canvas></div></div>
     </div>
 
-    <div class="footer" id="footerInfo">Actualizando cada 30 segundos</div>
+    <div class="footer" id="footerInfo">Actualizando cada 24 horas</div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -160,141 +233,215 @@
     const GID = '1527829671';
     const GURL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
 
-    const RED='#E8001D', BLUE='#1F3A5F', MID='#888888';
-    const PALETTE=[RED,'#F05070','#F59090','#FAC0C0','#FDE0E0','#CCCCCC','#B0B0B0','#909090'];
-    const PALETTE2=['#1F3A5F','#2E5490','#3D6EB8','#6A9BD1','#97BDE6','#C3D9F3','#CCCCCC'];
-    const FREQ_ORDER=['Una vez a la semana','Una vez cada 15 días','Una vez al mes','De vez en cuando','Nunca o casi nunca'];
+    const MID = '#888888';
+    const BLUE_PAL = ['#1F3A5F','#2E5490','#3D6EB8','#6A9BD1','#97BDE6','#C3D9F3','#DDEAF8'];
+    const FREQ_ORDER = ['Una vez a la semana','Una vez cada 15 días','Una vez al mes','De vez en cuando','Nunca o casi nunca'];
+    const AGE_RANGES = ['-17','18-24','25-34','35-44','45-54','55-64'];
 
     let allRows=[], colHeaders=[], charts={};
 
     function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 
-    function makeBar(id, labels, data, colors, horizontal, showLabels){
+    function pct(n, total){ return total>0?Math.round(n/total*100):0; }
+
+    function makeBar(id, labels, data, colors, horizontal, showPctLabels, hideXAxis){
       destroyChart(id);
       const ctx=document.getElementById(id); if(!ctx) return;
+      const total = data.reduce((a,b)=>a+b,0);
       charts[id]=new Chart(ctx,{
         type:'bar',
         data:{ labels, datasets:[{ data, backgroundColor:colors, borderRadius:4, borderSkipped:false }] },
         options:{
           indexAxis:horizontal?'y':'x', responsive:true, maintainAspectRatio:false,
-          layout:{ padding:{ right:horizontal&&showLabels?45:0, top:!horizontal&&showLabels?18:0 } },
-          plugins:{ legend:{display:false}, datalabels:showLabels?{ anchor:'end', align:horizontal?'end':'top', color:'#444', font:{size:10,family:'Figtree',weight:'600'}, formatter:v=>v }:false },
+          layout:{ padding:{ right:horizontal&&showPctLabels?50:0, top:!horizontal&&showPctLabels?20:0 } },
+          plugins:{
+            legend:{display:false},
+            datalabels: showPctLabels ? {
+              anchor:'end', align:horizontal?'end':'top',
+              color:'#333', font:{size:10,family:'Figtree',weight:'600'},
+              formatter: v => total>0 ? Math.round(v/total*100)+'%' : ''
+            } : false
+          },
           scales:{
-            x:{ ticks:{color:MID,font:{size:9,family:'Figtree'}}, grid:{color:'rgba(0,0,0,0.04)'}, beginAtZero:true },
-            y:{ ticks:{color:MID,font:{size:9,family:'Figtree'}}, grid:{color:'rgba(0,0,0,0.04)'}, beginAtZero:true }
+            x:{
+              display: !hideXAxis,
+              ticks:{color:MID,font:{size:9,family:'Figtree'}},
+              grid:{color:'rgba(0,0,0,0.04)'}, beginAtZero:true
+            },
+            y:{
+              ticks:{color:MID,font:{size:9,family:'Figtree'}},
+              grid:{color: hideXAxis?'rgba(0,0,0,0)':'rgba(0,0,0,0.04)'},
+              beginAtZero:true
+            }
           }
         },
-        plugins:showLabels?[ChartDataLabels]:[]
+        plugins:showPctLabels?[ChartDataLabels]:[]
       });
     }
 
-    function makeDoughnut(id, labels, data, colors){
+    function makeRatingBar(id, ratingObj, hideXAxis){
+      const labels=[],data=[],colors=[];
+      const total=Object.values(ratingObj).reduce((a,b)=>a+b,0);
+      for(let i=1;i<=10;i++){
+        labels.push(String(i));
+        data.push(ratingObj[i]||0);
+        colors.push(i>=9?'#1a7a3a':i>=7?'#2E5490':i>=6?'#97BDE6':'#CCCCCC');
+      }
       destroyChart(id);
       const ctx=document.getElementById(id); if(!ctx) return;
-      charts[id]=new Chart(ctx,{ type:'doughnut', data:{ labels, datasets:[{ data, backgroundColor:colors, borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{ legend:{display:true, position:'right', labels:{color:MID, font:{size:9,family:'Figtree'}, boxWidth:8, padding:6}}, datalabels:false } } });
+      charts[id]=new Chart(ctx,{
+        type:'bar',
+        data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:4,borderSkipped:false}]},
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          layout:{padding:{top:20}},
+          plugins:{
+            legend:{display:false},
+            datalabels:{
+              anchor:'end',align:'top',
+              color:'#333',font:{size:9,family:'Figtree',weight:'600'},
+              formatter:v=>total>0&&v>0?Math.round(v/total*100)+'%':''
+            }
+          },
+          scales:{
+            x:{ticks:{color:MID,font:{size:9,family:'Figtree'}},grid:{color:'rgba(0,0,0,0.04)'},beginAtZero:true},
+            y:{display:false,beginAtZero:true}
+          }
+        },
+        plugins:[ChartDataLabels]
+      });
     }
 
-    function makeRatingBar(id, ratingObj){
-      const labels=[],data=[],colors=[];
-      for(let i=1;i<=10;i++){ labels.push(String(i)); data.push(ratingObj[i]||0); colors.push(i>=8?RED:i>=6?'#F59090':'#CCCCCC'); }
-      makeBar(id,labels,data,colors,false,false);
-    }
-
-    function ageGroup(age){
-      const a=parseInt(age); if(isNaN(a)) return null;
-      if(a<=25) return '18-25'; if(a<=35) return '26-35'; if(a<=45) return '36-45'; if(a<=55) return '46-55'; return '56+';
-    }
-
-    function parseGviz(raw){
-      const json=JSON.parse(raw.replace(/^[^\{]+/,'').replace(/[^\}]+$/,''));
-      colHeaders=json.table.cols.map(c=>c.label);
-      return json.table.rows.map(r=>r.c.map(c=>c?(c.v??c.f??''):''));
-    }
-
-    function colIdx(keyword){
-      return colHeaders.findIndex(c=>c&&c.toLowerCase().includes(keyword.toLowerCase()));
-    }
-
-    function getCol(rows, keyword){
-      const i=colIdx(keyword); if(i<0) return rows.map(()=>'');
-      return rows.map(r=>(r[i]??'').toString());
-    }
-
+    function colIdx(keyword){ return colHeaders.findIndex(c=>c&&c.toLowerCase().includes(keyword.toLowerCase())); }
+    function getCol(rows,keyword){ const i=colIdx(keyword); if(i<0) return rows.map(()=>''); return rows.map(r=>(r[i]??'').toString()); }
     function countSingle(arr){ const m={}; arr.forEach(v=>{v=v.trim();if(v)m[v]=(m[v]||0)+1;}); return m; }
     function countMulti(arr){ const m={}; arr.forEach(v=>{v.split(',').forEach(p=>{p=p.trim();if(p)m[p]=(m[p]||0)+1;})}); return m; }
     function avgNum(arr){ const ns=arr.map(parseFloat).filter(n=>!isNaN(n)&&n>0); return ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:0; }
 
+    function ageGroup(age){
+      const a=parseInt(age); if(isNaN(a)) return null;
+      if(a<=17) return '-17';
+      if(a<=24) return '18-24';
+      if(a<=34) return '25-34';
+      if(a<=44) return '35-44';
+      if(a<=54) return '45-54';
+      if(a<=64) return '55-64';
+      return null;
+    }
+
+    function ratingStats(arr){
+      const ns=arr.map(parseFloat).filter(n=>!isNaN(n)&&n>0);
+      const n=ns.length;
+      if(!n) return {avg:0,alta:0,med:0,baja:0,dist:{}};
+      const avg=ns.reduce((a,b)=>a+b,0)/n;
+      const alta=ns.filter(v=>v>=9).length;
+      const med=ns.filter(v=>v>=7).length;
+      const baja=ns.filter(v=>v<=5).length;
+      const dist={};
+      for(let i=1;i<=10;i++) dist[i]=0;
+      ns.forEach(v=>{const r=Math.round(v);if(r>=1&&r<=10)dist[r]++;});
+      return {avg,alta:Math.round(alta/n*100),med:Math.round(med/n*100),baja:Math.round(baja/n*100),dist};
+    }
+
     function render(rows){
       const total=rows.length;
       document.getElementById('kpiTotal').textContent=total.toLocaleString('es-ES');
-      document.getElementById('filterBadge').textContent=total.toLocaleString('es-ES')+' respuestas';
+      document.getElementById('encuestadosBadge').innerHTML=`<span>${total.toLocaleString('es-ES')}</span> encuestados`;
       if(!total) return;
 
       // KPIs
       const knewArr=getCol(rows,'conocías');
       const knewYes=knewArr.filter(v=>v.toLowerCase().startsWith('sí')||v.toLowerCase().startsWith('si')).length;
-      document.getElementById('kpiKnew').textContent=Math.round(knewYes/total*100)+'%';
+      document.getElementById('kpiKnew').textContent=pct(knewYes,total)+'%';
       document.getElementById('kpiClasico').textContent=avgNum(getCol(rows,'Clásico')).toFixed(1);
       document.getElementById('kpiChamoy').textContent=avgNum(getCol(rows,'Chamoy')).toFixed(1);
 
-      // Gender donut
+      // Género — solo F y M
       const gArr=getCol(rows,'gender');
-      let femC=0,masC=0,naC=0,nbC=0;
-      gArr.forEach(g=>{ const gl=g.trim().toUpperCase(); if(gl==='F')femC++; else if(gl==='M')masC++; else if(gl==='NB')nbC++; else naC++; });
-      document.getElementById('genPct').textContent=Math.round(femC/total*100)+'%';
+      let femC=0,masC=0;
+      gArr.forEach(g=>{ const gl=g.trim().toUpperCase(); if(gl==='F')femC++; else if(gl==='M')masC++; });
+      const fmTotal=femC+masC;
+      document.getElementById('genPct').textContent=fmTotal>0?pct(femC,fmTotal)+'%':'—';
       destroyChart('cGenero');
       const gCtx=document.getElementById('cGenero');
-      if(gCtx){ charts['cGenero']=new Chart(gCtx,{ type:'doughnut', data:{ labels:['Femenino','Masculino','No especifica','No binario'], datasets:[{ data:[femC,masC,naC,nbC], backgroundColor:[RED,BLUE,'#AAAAAA','#F59090'], borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
-      document.getElementById('genderLegend').innerHTML=[{l:'Femenino',c:RED,v:femC},{l:'Masculino',c:BLUE,v:masC},{l:'NA',c:'#AAAAAA',v:naC},{l:'NB',c:'#F59090',v:nbC}].map(x=>`<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span style="color:${x.c}">${x.l} ${Math.round(x.v/total*100)}%</span></div>`).join('');
+      if(gCtx){ charts['cGenero']=new Chart(gCtx,{ type:'doughnut', data:{ labels:['Femenino','Masculino'], datasets:[{ data:[femC,masC], backgroundColor:['#E8001D','#1F3A5F'], borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
+      document.getElementById('genderLegend').innerHTML=[{l:'Femenino',c:'#E8001D',v:femC},{l:'Masculino',c:'#1F3A5F',v:masC}].map(x=>`<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span style="color:${x.c}">${x.l} ${fmTotal>0?pct(x.v,fmTotal):0}%</span></div>`).join('');
 
-      // Edad
-      const ageGroups={'18-25':0,'26-35':0,'36-45':0,'46-55':0,'56+':0};
-      getCol(rows,'user_age').forEach(a=>{ const g=ageGroup(a); if(g) ageGroups[g]++; });
-      const edadE=Object.entries(ageGroups).filter(e=>e[1]>0);
-      makeBar('cEdad',edadE.map(e=>e[0]),edadE.map(e=>e[1]),edadE.map(()=>RED),false,true);
+      // Edad con nuevos rangos
+      const ageG={'-17':0,'18-24':0,'25-34':0,'35-44':0,'45-54':0,'55-64':0};
+      getCol(rows,'user_age').forEach(a=>{ const g=ageGroup(a); if(g&&ageG[g]!==undefined) ageG[g]++; });
+      const edadE=Object.entries(ageG).filter(e=>e[1]>0);
+      makeBar('cEdad',edadE.map(e=>e[0]),edadE.map(e=>e[1]),edadE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),false,true,false);
 
-      // Conocía — normalizar
+      // Conocía — donut con % "No" en el centro + leyenda abajo
       const knewMap={};
       knewArr.forEach(v=>{
         let k;
         if(v.toLowerCase().includes('y lo había probado')||v.toLowerCase().includes('y lo habia probado')) k='Sí, lo había probado';
         else if(v.toLowerCase().includes('no lo había')||v.toLowerCase().includes('no lo habia')) k='Sí, no lo había probado';
-        else if(v.toLowerCase().startsWith('no')) k='No lo conocía';
+        else if(v.toLowerCase().startsWith('no')) k='No la conocía';
         else if(v.trim()) k=v.trim();
         if(k) knewMap[k]=(knewMap[k]||0)+1;
       });
+      const noCount=knewMap['No la conocía']||0;
+      document.getElementById('conociaNoP').textContent=pct(noCount,total)+'%';
       const knewE=Object.entries(knewMap).sort((a,b)=>b[1]-a[1]);
-      makeDoughnut('cConocia',knewE.map(e=>e[0]),knewE.map(e=>e[1]),[RED,BLUE,'#AAAAAA']);
+      const conociaColors=['#2E5490','#6A9BD1','#CCCCCC'];
+      destroyChart('cConocia');
+      const cCtx=document.getElementById('cConocia');
+      if(cCtx){ charts['cConocia']=new Chart(cCtx,{ type:'doughnut', data:{ labels:knewE.map(e=>e[0]), datasets:[{ data:knewE.map(e=>e[1]), backgroundColor:conociaColors, borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'65%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
+      document.getElementById('conociaLegend').innerHTML=knewE.map((e,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${conociaColors[i]||'#ccc'}"></div><span style="font-size:10px;color:#444">${e[0]} — ${pct(e[1],total)}%</span></div>`).join('');
 
-      // Picante
-      const picE=Object.entries(countSingle(getCol(rows,'picante'))).sort((a,b)=>b[1]-a[1]);
-      makeBar('cPicante',picE.map(e=>e[0]),picE.map(e=>e[1]),picE.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true);
+      // Picante — orden fijo
+      const picM=countSingle(getCol(rows,'picante'));
+      const picSorted=FREQ_ORDER.map(k=>({k,v:picM[k]||0}));
+      makeBar('cPicante',picSorted.map(x=>x.k),picSorted.map(x=>x.v),picSorted.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
 
       // Consumo
       const consE=Object.entries(countSingle(getCol(rows,'cómo has consumido'))).sort((a,b)=>b[1]-a[1]);
-      makeBar('cConsumo',consE.map(e=>e[0]),consE.map(e=>e[1]),consE.map((_,i)=>PALETTE2[Math.min(i,PALETTE2.length-1)]),true,true);
+      makeBar('cConsumo',consE.map(e=>e[0]),consE.map(e=>e[1]),consE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
 
-      // Ratings
-      function ratingDist(arr){ const d={}; for(let i=1;i<=10;i++)d[i]=0; arr.forEach(v=>{const n=Math.round(parseFloat(v));if(n>=1&&n<=10)d[n]++;}); return d; }
-      makeRatingBar('cGustoClasico',ratingDist(getCol(rows,'Clásico')));
-      makeRatingBar('cGustoChamoy', ratingDist(getCol(rows,'Chamoy')));
-      makeRatingBar('cGustoLima',   ratingDist(getCol(rows,'Chile y Lima')));
+      // Valoraciones con mini-stats
+      function setRatingCard(prefix, arr){
+        const s=ratingStats(arr);
+        document.getElementById(prefix+'Media').textContent=s.avg>0?s.avg.toFixed(1):'—';
+        document.getElementById(prefix+'Alta').textContent=s.avg>0?s.alta+'%':'—';
+        document.getElementById(prefix+'Med').textContent=s.avg>0?s.med+'%':'—';
+        document.getElementById(prefix+'Baja').textContent=s.avg>0?s.baja+'%':'—';
+        return s.dist;
+      }
+      const distCla=setRatingCard('mCla',getCol(rows,'Clásico'));
+      const distCham=setRatingCard('mCham',getCol(rows,'Chamoy'));
+      const distLima=setRatingCard('mLima',getCol(rows,'Chile y Lima'));
+      makeRatingBar('cGustoClasico',distCla,false);
+      makeRatingBar('cGustoChamoy', distCham,false);
+      makeRatingBar('cGustoLima',   distLima,false);
 
-      // Futuro
-      function makeFut(id,keyword){ const m=countSingle(getCol(rows,keyword)); const sorted=FREQ_ORDER.map(k=>({k,v:m[k]||0})); makeBar(id,sorted.map(x=>x.k),sorted.map(x=>x.v),sorted.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true); }
+      // Intención futura
+      function makeFut(id,keyword){
+        const m=countSingle(getCol(rows,keyword));
+        const sorted=FREQ_ORDER.map(k=>({k,v:m[k]||0}));
+        makeBar(id,sorted.map(x=>x.k),sorted.map(x=>x.v),sorted.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
+      }
       makeFut('cFutClasico','usarías Tajín Clásico');
       makeFut('cFutChamoy', 'usarías Tajín Chamoy');
       makeFut('cFutLima',   'usarías Tajín Chile');
 
       // Más / Menos
       const masE=Object.entries(countSingle(getCol(rows,'más te gusta'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
-      makeBar('cMasGusta',masE.map(e=>e[0]),masE.map(e=>e[1]),masE.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true);
+      makeBar('cMasGusta',masE.map(e=>e[0]),masE.map(e=>e[1]),masE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
       const menE=Object.entries(countMulti(getCol(rows,'lo que menos'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
-      makeBar('cMenosGusta',menE.map(e=>e[0]),menE.map(e=>e[1]),menE.map((_,i)=>PALETTE2[Math.min(i,PALETTE2.length-1)]),true,true);
+      makeBar('cMenosGusta',menE.map(e=>e[0]),menE.map(e=>e[1]),menE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
 
       const now=new Date();
       document.getElementById('lastUpdate').textContent=`Actualizado: ${now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
-      document.getElementById('footerInfo').textContent=`${total.toLocaleString('es-ES')} respuestas · última actualización ${now.toLocaleTimeString('es-ES')} · se refresca cada 30 s`;
+      document.getElementById('footerInfo').textContent=`${total.toLocaleString('es-ES')} encuestados · última actualización ${now.toLocaleTimeString('es-ES')} · se refresca cada 24 h`;
+    }
+
+    function parseGviz(raw){
+      const json=JSON.parse(raw.replace(/^[^\{]+/,'').replace(/[^\}]+$/,''));
+      colHeaders=json.table.cols.map(c=>c.label);
+      return json.table.rows.map(r=>r.c.map(c=>c?(c.v??c.f??''):''));
     }
 
     function getFiltered(){
@@ -311,12 +458,10 @@
     async function fetchData(){
       try{
         const res=await fetch(GURL);
-        const raw=await res.text();
-        allRows=parseGviz(raw);
+        allRows=parseGviz(await res.text());
         render(getFiltered());
       }catch(e){
         document.getElementById('lastUpdate').textContent='Error de conexión';
-        console.error(e);
       }
     }
 
@@ -324,7 +469,7 @@
     document.getElementById('fAge').addEventListener('change',  ()=>render(getFiltered()));
 
     fetchData();
-    setInterval(fetchData, 30000);
+    setInterval(fetchData, 24*60*60*1000);
   </script>
 </body>
 </html>
