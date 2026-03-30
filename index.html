@@ -55,10 +55,11 @@
     .mini-stat { background: var(--s-gray-light); border-radius: var(--radius-sm); padding: 8px 10px; text-align: center; }
     .mini-stat-label { font-size: 9px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
     .mini-stat-value { font-size: 18px; font-weight: 900; color: var(--s-black); line-height: 1; }
-    .mini-stat-value.blue { color: var(--b2); }
+    .mini-stat-value.blue { color: var(--s-black); }
     .mini-stat-value.green { color: #1a7a3a; }
+    .mini-stat-value.teal { background: linear-gradient(135deg,#1a5f8a,#1a7a3a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     .mini-stat-value.orange { color: #b85c00; }
-    .mini-stat-value.red-dark { color: var(--s-red-dark); }
+    .mini-stat-value.red-dark { color: #CCCCCC; }
 
     /* Gender donut */
     .gender-donut-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 150px; gap: 10px; }
@@ -80,7 +81,18 @@
     .conocia-lbl { font-size: 8px; color: #6B6B6B; margin-top: 1px; line-height: 1.2; }
     .conocia-legend { display: flex; flex-direction: column; gap: 5px; width: 100%; }
 
-    .footer { text-align: center; font-size: 11px; color: var(--s-gray); margin-top: 1rem; }
+    /* Insights */
+    .insights-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 12px; }
+    .insight-card { background: var(--s-white); border: 1px solid var(--s-border); border-radius: var(--radius); padding: 1rem 1.25rem; position: relative; overflow: hidden; }
+    .insight-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .insight-card.ins-blue::before  { background: var(--b2); }
+    .insight-card.ins-green::before { background: #1a7a3a; }
+    .insight-card.ins-red::before   { background: var(--s-red); }
+    .insight-icon { font-size: 22px; margin-bottom: 6px; }
+    .insight-title { font-size: 11px; font-weight: 700; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    .insight-body { font-size: 13px; font-weight: 500; color: var(--s-black); line-height: 1.45; }
+    .insight-body strong { font-weight: 800; }
+    @media (max-width:700px){ .insights-grid { grid-template-columns: 1fr; } }
 
     @media (max-width: 700px) {
       .kpi-row { grid-template-columns: 1fr 1fr; }
@@ -178,7 +190,7 @@
       <div class="card-title">Tajín Clásico</div>
       <div class="grid-4" style="margin-bottom:10px;">
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mClaBaja">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mClaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value teal" id="mClaMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mClaAlta">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mClaMedia">—</div></div>
       </div>
@@ -189,7 +201,7 @@
       <div class="card-title">Tajín Chamoy</div>
       <div class="grid-4" style="margin-bottom:10px;">
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mChamBaja">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mChamMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value teal" id="mChamMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mChamAlta">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mChamMedia">—</div></div>
       </div>
@@ -200,7 +212,7 @@
       <div class="card-title">Tajín Chile y Lima</div>
       <div class="grid-4" style="margin-bottom:10px;">
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mLimaBaja">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mLimaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value teal" id="mLimaMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mLimaAlta">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mLimaMedia">—</div></div>
       </div>
@@ -220,6 +232,25 @@
     <div class="grid-2">
       <div class="card"><div class="card-title">¿Qué es lo que más te gusta?</div><div class="chart-wrap h220"><canvas id="cMasGusta"></canvas></div></div>
       <div class="card"><div class="card-title">¿Y lo que menos?</div><div class="chart-wrap h220"><canvas id="cMenosGusta"></canvas></div></div>
+    </div>
+
+    <div class="section-label">Insights destacados</div>
+    <div class="insights-grid">
+      <div class="insight-card ins-blue">
+        <div class="insight-icon">🏆</div>
+        <div class="insight-title">Producto más valorado</div>
+        <div class="insight-body" id="insightTop">—</div>
+      </div>
+      <div class="insight-card ins-green">
+        <div class="insight-icon">😊</div>
+        <div class="insight-title">Satisfacción general</div>
+        <div class="insight-body" id="insightSat">—</div>
+      </div>
+      <div class="insight-card ins-red">
+        <div class="insight-icon">📣</div>
+        <div class="insight-title">Conocimiento de marca</div>
+        <div class="insight-body" id="insightBrand">—</div>
+      </div>
     </div>
 
     <div class="footer" id="footerInfo">Actualizando cada 24 horas</div>
@@ -433,6 +464,28 @@
       makeBar('cMasGusta',masE.map(e=>e[0]),masE.map(e=>e[1]),masE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
       const menE=Object.entries(countMulti(getCol(rows,'lo que menos'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
       makeBar('cMenosGusta',menE.map(e=>e[0]),menE.map(e=>e[1]),menE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),true,true,true);
+
+      // --- Insights dinámicos ---
+      const sCla = ratingStats(getCol(rows,'Clásico'));
+      const sCham = ratingStats(getCol(rows,'Chamoy'));
+      const sLima = ratingStats(getCol(rows,'Chile y Lima'));
+      const products = [{name:'Tajín Clásico',s:sCla},{name:'Tajín Chamoy',s:sCham},{name:'Tajín Chile y Lima',s:sLima}];
+      const best = products.filter(p=>p.s.avg>0).sort((a,b)=>b.s.avg-a.s.avg)[0];
+      if(best){
+        document.getElementById('insightTop').innerHTML=
+          `<strong>${best.name}</strong> lidera con una media de <strong>${best.s.avg.toFixed(1)}/10</strong> y un <strong>${best.s.alta}%</strong> de encuestados con puntuación 9 o superior.`;
+      }
+      const avgSatAll = products.filter(p=>p.s.avg>0);
+      if(avgSatAll.length){
+        const avgMed = Math.round(avgSatAll.reduce((a,p)=>a+p.s.med,0)/avgSatAll.length);
+        const avgBaja = Math.round(avgSatAll.reduce((a,p)=>a+p.s.baja,0)/avgSatAll.length);
+        document.getElementById('insightSat').innerHTML=
+          `En promedio, el <strong>${avgMed}%</strong> de los participantes calificó los productos con 7 o más. Solo el <strong>${avgBaja}%</strong> mostró insatisfacción (≤5).`;
+      }
+      const knewPct = pct(knewYes, total);
+      const noPct   = pct(knewArr.filter(v=>v.toLowerCase().startsWith('no')).length, total);
+      document.getElementById('insightBrand').innerHTML=
+        `El <strong>${knewPct}%</strong> ya conocía Tajín antes de la degustación. El <strong>${noPct}%</strong> no la conocía, lo que representa una gran oportunidad de captación.`;
 
       const now=new Date();
       document.getElementById('lastUpdate').textContent=`Actualizado: ${now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
