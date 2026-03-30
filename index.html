@@ -43,7 +43,7 @@
     .card-title { font-size: 12px; font-weight: 600; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 6px; }
     .card-title::before { content: ''; display: inline-block; width: 3px; height: 12px; background: var(--s-red); border-radius: 2px; flex-shrink: 0; }
     .chart-wrap { position: relative; width: 100%; }
-    .h120{height:120px;}.h150{height:150px;}.h180{height:180px;}.h220{height:220px;}.h260{height:260px;}
+    .h150{height:150px;}.h180{height:180px;}.h220{height:220px;}
     .gender-donut-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 150px; gap: 10px; }
     .donut-container { position: relative; width: 100px; height: 100px; }
     .donut-container canvas { position: absolute; top: 0; left: 0; }
@@ -75,7 +75,7 @@
 
   <div class="title-bar">
     <h1>Tajín — Resultados de encuesta</h1>
-    <p>1.952 participantes</p>
+    <p>Resultados en tiempo real</p>
   </div>
 
   <div class="content">
@@ -98,11 +98,11 @@
         <option value="46-55">46–55</option>
         <option value="56+">56+</option>
       </select>
-      <span class="filter-badge" id="filterBadge">1.952 respuestas</span>
+      <span class="filter-badge" id="filterBadge">Cargando...</span>
     </div>
 
     <div class="kpi-row">
-      <div class="kpi"><div class="kpi-label">Respuestas</div><div class="kpi-value" id="kpiTotal">1.952</div><div class="kpi-sub">participantes</div></div>
+      <div class="kpi"><div class="kpi-label">Respuestas</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">participantes</div></div>
       <div class="kpi"><div class="kpi-label">Conocían Tajín</div><div class="kpi-value" id="kpiKnew">—</div><div class="kpi-sub">% conocían la marca</div></div>
       <div class="kpi"><div class="kpi-label">Nota Clásico</div><div class="kpi-value" id="kpiClasico">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
       <div class="kpi"><div class="kpi-label">Nota Chamoy</div><div class="kpi-value" id="kpiChamoy">—</div><div class="kpi-sub">media (escala 1–10)</div></div>
@@ -150,20 +150,22 @@
       <div class="card"><div class="card-title">¿Y lo que menos?</div><div class="chart-wrap h220"><canvas id="cMenosGusta"></canvas></div></div>
     </div>
 
-    <div class="footer" id="footerInfo">Cargando datos...</div>
+    <div class="footer" id="footerInfo">Actualizando cada 30 segundos</div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTW08MRPf8pHBwcPYj2JP5O0ABX8WBaBExfrFnZVF_kgZRGzlNyHDJTacpA7yzpFFoQmbyPan8wEOal/pub?gid=1527829671&single=true&output=csv';
+    const SHEET_ID = '1MTx7ogrJc8zQXZox_m3-cNopKYjer9SgbYE6LJAKu64';
+    const GID = '1527829671';
+    const GURL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
+
     const RED='#E8001D', BLUE='#1F3A5F', MID='#888888';
     const PALETTE=[RED,'#F05070','#F59090','#FAC0C0','#FDE0E0','#CCCCCC','#B0B0B0','#909090'];
     const PALETTE2=['#1F3A5F','#2E5490','#3D6EB8','#6A9BD1','#97BDE6','#C3D9F3','#CCCCCC'];
     const FREQ_ORDER=['Una vez a la semana','Una vez cada 15 días','Una vez al mes','De vez en cuando','Nunca o casi nunca'];
 
-    let allRows=[], charts={}, dataLoaded=false;
+    let allRows=[], colHeaders=[], charts={};
 
     function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 
@@ -203,7 +205,21 @@
       if(a<=25) return '18-25'; if(a<=35) return '26-35'; if(a<=45) return '36-45'; if(a<=55) return '46-55'; return '56+';
     }
 
-    function col(rows,name){ return rows.map(r=>r[name]||''); }
+    function parseGviz(raw){
+      const json=JSON.parse(raw.replace(/^[^\{]+/,'').replace(/[^\}]+$/,''));
+      colHeaders=json.table.cols.map(c=>c.label);
+      return json.table.rows.map(r=>r.c.map(c=>c?(c.v??c.f??''):''));
+    }
+
+    function colIdx(keyword){
+      return colHeaders.findIndex(c=>c&&c.toLowerCase().includes(keyword.toLowerCase()));
+    }
+
+    function getCol(rows, keyword){
+      const i=colIdx(keyword); if(i<0) return rows.map(()=>'');
+      return rows.map(r=>(r[i]??'').toString());
+    }
+
     function countSingle(arr){ const m={}; arr.forEach(v=>{v=v.trim();if(v)m[v]=(m[v]||0)+1;}); return m; }
     function countMulti(arr){ const m={}; arr.forEach(v=>{v.split(',').forEach(p=>{p=p.trim();if(p)m[p]=(m[p]||0)+1;})}); return m; }
     function avgNum(arr){ const ns=arr.map(parseFloat).filter(n=>!isNaN(n)&&n>0); return ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:0; }
@@ -215,100 +231,100 @@
       if(!total) return;
 
       // KPIs
-      const knewArr=col(rows,'¿Conocías la marca Tajin?');
+      const knewArr=getCol(rows,'conocías');
       const knewYes=knewArr.filter(v=>v.toLowerCase().startsWith('sí')||v.toLowerCase().startsWith('si')).length;
       document.getElementById('kpiKnew').textContent=Math.round(knewYes/total*100)+'%';
-      document.getElementById('kpiClasico').textContent=avgNum(col(rows,'¿Cuánto te ha gustado Tajin Clásico?')).toFixed(1);
-      document.getElementById('kpiChamoy').textContent=avgNum(col(rows,'¿Cuánto te ha gustado Tajin Chamoy?')).toFixed(1);
+      document.getElementById('kpiClasico').textContent=avgNum(getCol(rows,'Clásico')).toFixed(1);
+      document.getElementById('kpiChamoy').textContent=avgNum(getCol(rows,'Chamoy')).toFixed(1);
 
       // Gender donut
+      const gArr=getCol(rows,'gender');
       let femC=0,masC=0,naC=0,nbC=0;
-      col(rows,'gender').forEach(g=>{ const gl=g.trim().toUpperCase(); if(gl==='F')femC++; else if(gl==='M')masC++; else if(gl==='NB')nbC++; else naC++; });
-      const femPct=Math.round(femC/total*100);
-      document.getElementById('genPct').textContent=femPct+'%';
+      gArr.forEach(g=>{ const gl=g.trim().toUpperCase(); if(gl==='F')femC++; else if(gl==='M')masC++; else if(gl==='NB')nbC++; else naC++; });
+      document.getElementById('genPct').textContent=Math.round(femC/total*100)+'%';
       destroyChart('cGenero');
       const gCtx=document.getElementById('cGenero');
       if(gCtx){ charts['cGenero']=new Chart(gCtx,{ type:'doughnut', data:{ labels:['Femenino','Masculino','No especifica','No binario'], datasets:[{ data:[femC,masC,naC,nbC], backgroundColor:[RED,BLUE,'#AAAAAA','#F59090'], borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
       document.getElementById('genderLegend').innerHTML=[{l:'Femenino',c:RED,v:femC},{l:'Masculino',c:BLUE,v:masC},{l:'NA',c:'#AAAAAA',v:naC},{l:'NB',c:'#F59090',v:nbC}].map(x=>`<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span style="color:${x.c}">${x.l} ${Math.round(x.v/total*100)}%</span></div>`).join('');
 
       // Edad
-      const ageG={'18-25':0,'26-35':0,'36-45':0,'46-55':0,'56+':0};
-      col(rows,'user_age').forEach(a=>{ const g=ageGroup(a); if(g) ageG[g]++; });
-      const edadE=Object.entries(ageG).filter(e=>e[1]>0);
+      const ageGroups={'18-25':0,'26-35':0,'36-45':0,'46-55':0,'56+':0};
+      getCol(rows,'user_age').forEach(a=>{ const g=ageGroup(a); if(g) ageGroups[g]++; });
+      const edadE=Object.entries(ageGroups).filter(e=>e[1]>0);
       makeBar('cEdad',edadE.map(e=>e[0]),edadE.map(e=>e[1]),edadE.map(()=>RED),false,true);
 
-      // Conocía
+      // Conocía — normalizar
       const knewMap={};
-      col(rows,'¿Conocías la marca Tajin?').forEach(v=>{
-        v=v.trim(); let k;
-        if(v.toLowerCase().includes('y lo había probado')) k='Sí, lo había probado';
-        else if(v.toLowerCase().includes('no lo había')) k='Sí, no lo había probado';
+      knewArr.forEach(v=>{
+        let k;
+        if(v.toLowerCase().includes('y lo había probado')||v.toLowerCase().includes('y lo habia probado')) k='Sí, lo había probado';
+        else if(v.toLowerCase().includes('no lo había')||v.toLowerCase().includes('no lo habia')) k='Sí, no lo había probado';
         else if(v.toLowerCase().startsWith('no')) k='No lo conocía';
-        else if(v) k=v;
+        else if(v.trim()) k=v.trim();
         if(k) knewMap[k]=(knewMap[k]||0)+1;
       });
       const knewE=Object.entries(knewMap).sort((a,b)=>b[1]-a[1]);
       makeDoughnut('cConocia',knewE.map(e=>e[0]),knewE.map(e=>e[1]),[RED,BLUE,'#AAAAAA']);
 
       // Picante
-      const picE=Object.entries(countSingle(col(rows,'¿Cada cuánto consumes picante?'))).sort((a,b)=>b[1]-a[1]);
+      const picE=Object.entries(countSingle(getCol(rows,'picante'))).sort((a,b)=>b[1]-a[1]);
       makeBar('cPicante',picE.map(e=>e[0]),picE.map(e=>e[1]),picE.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true);
 
       // Consumo
-      const consE=Object.entries(countSingle(col(rows,'¿Cómo has consumido Tajin?'))).sort((a,b)=>b[1]-a[1]);
+      const consE=Object.entries(countSingle(getCol(rows,'cómo has consumido'))).sort((a,b)=>b[1]-a[1]);
       makeBar('cConsumo',consE.map(e=>e[0]),consE.map(e=>e[1]),consE.map((_,i)=>PALETTE2[Math.min(i,PALETTE2.length-1)]),true,true);
 
       // Ratings
       function ratingDist(arr){ const d={}; for(let i=1;i<=10;i++)d[i]=0; arr.forEach(v=>{const n=Math.round(parseFloat(v));if(n>=1&&n<=10)d[n]++;}); return d; }
-      makeRatingBar('cGustoClasico',ratingDist(col(rows,'¿Cuánto te ha gustado Tajin Clásico?')));
-      makeRatingBar('cGustoChamoy', ratingDist(col(rows,'¿Cuánto te ha gustado Tajin Chamoy?')));
-      makeRatingBar('cGustoLima',   ratingDist(col(rows,'¿Cuánto te ha gustado Tajín Chile y Lima?')));
+      makeRatingBar('cGustoClasico',ratingDist(getCol(rows,'Clásico')));
+      makeRatingBar('cGustoChamoy', ratingDist(getCol(rows,'Chamoy')));
+      makeRatingBar('cGustoLima',   ratingDist(getCol(rows,'Chile y Lima')));
 
       // Futuro
-      function makeFut(id,colName){ const m=countSingle(col(rows,colName)); const sorted=FREQ_ORDER.map(k=>({k,v:m[k]||0})); makeBar(id,sorted.map(x=>x.k),sorted.map(x=>x.v),sorted.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true); }
-      makeFut('cFutClasico','¿Cada cuánto usarías Tajín Clásico después de haberlo probado?');
-      makeFut('cFutChamoy', '¿Cada cuánto usarías Tajín Chamoy después de haberlo probado?');
-      makeFut('cFutLima',   '¿Cada cuánto usarías Tajín Chile y Lima después de haberlo probado?');
+      function makeFut(id,keyword){ const m=countSingle(getCol(rows,keyword)); const sorted=FREQ_ORDER.map(k=>({k,v:m[k]||0})); makeBar(id,sorted.map(x=>x.k),sorted.map(x=>x.v),sorted.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true); }
+      makeFut('cFutClasico','usarías Tajín Clásico');
+      makeFut('cFutChamoy', 'usarías Tajín Chamoy');
+      makeFut('cFutLima',   'usarías Tajín Chile');
 
       // Más / Menos
-      const masE=Object.entries(countSingle(col(rows,'¿Qué es lo que más te gusta de Tajín Clásico?'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
+      const masE=Object.entries(countSingle(getCol(rows,'más te gusta'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
       makeBar('cMasGusta',masE.map(e=>e[0]),masE.map(e=>e[1]),masE.map((_,i)=>PALETTE[Math.min(i,PALETTE.length-1)]),true,true);
-      const menE=Object.entries(countMulti(col(rows,'¿Y lo que menos? (respuesta múltiple)'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
+      const menE=Object.entries(countMulti(getCol(rows,'lo que menos'))).sort((a,b)=>b[1]-a[1]).slice(0,6);
       makeBar('cMenosGusta',menE.map(e=>e[0]),menE.map(e=>e[1]),menE.map((_,i)=>PALETTE2[Math.min(i,PALETTE2.length-1)]),true,true);
 
       const now=new Date();
       document.getElementById('lastUpdate').textContent=`Actualizado: ${now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
-      document.getElementById('footerInfo').textContent=`${total.toLocaleString('es-ES')} respuestas · última actualización ${now.toLocaleTimeString('es-ES')}`;
+      document.getElementById('footerInfo').textContent=`${total.toLocaleString('es-ES')} respuestas · última actualización ${now.toLocaleTimeString('es-ES')} · se refresca cada 30 s`;
     }
 
     function getFiltered(){
       const g=document.getElementById('fGender').value;
       const a=document.getElementById('fAge').value;
+      const iG=colIdx('gender'), iA=colIdx('user_age');
       return allRows.filter(r=>{
-        if(g&&(r['gender']||'').trim()!==g) return false;
-        if(a){ const ag=ageGroup(r['user_age']||''); if(!ag||ag!==a) return false; }
+        if(g&&(r[iG]||'').trim()!==g) return false;
+        if(a){ const ag=ageGroup((r[iA]||'').toString()); if(!ag||ag!==a) return false; }
         return true;
       });
     }
 
-    function loadAndRender(){
-      Papa.parse(CSV_URL,{
-        download:true, header:true, skipEmptyLines:true,
-        complete:function(results){
-          allRows=results.data; dataLoaded=true;
-          render(getFiltered());
-          setTimeout(loadAndRender, 30000);
-        },
-        error:function(){
-          document.getElementById('lastUpdate').textContent='Error al cargar datos';
-        }
-      });
+    async function fetchData(){
+      try{
+        const res=await fetch(GURL);
+        const raw=await res.text();
+        allRows=parseGviz(raw);
+        render(getFiltered());
+      }catch(e){
+        document.getElementById('lastUpdate').textContent='Error de conexión';
+        console.error(e);
+      }
     }
 
-    document.getElementById('fGender').addEventListener('change',()=>{ if(dataLoaded) render(getFiltered()); });
-    document.getElementById('fAge').addEventListener('change',  ()=>{ if(dataLoaded) render(getFiltered()); });
+    document.getElementById('fGender').addEventListener('change',()=>render(getFiltered()));
+    document.getElementById('fAge').addEventListener('change',  ()=>render(getFiltered()));
 
-    loadAndRender();
+    fetchData();
+    setInterval(fetchData, 30000);
   </script>
 </body>
 </html>
