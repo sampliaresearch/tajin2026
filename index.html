@@ -379,7 +379,7 @@
     function render(rows){
       const total=rows.length;
       document.getElementById('kpiTotal').textContent=total.toLocaleString('es-ES');
-      document.getElementById('encuestadosBadge').innerHTML=`<span>${total.toLocaleString('es-ES')}</span> encuestados`;
+
       if(!total) return;
 
       // KPIs
