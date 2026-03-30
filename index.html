@@ -121,7 +121,6 @@
       <span class="filter-label">Edad</span>
       <select class="filter-select" id="fAge">
         <option value="">Todos</option>
-        <option value="-17">-17</option>
         <option value="18-24">18–24</option>
         <option value="25-34">25–34</option>
         <option value="35-44">35–44</option>
@@ -178,21 +177,18 @@
     <div class="card" style="margin-bottom:10px;">
       <div class="card-title">Tajín Clásico</div>
       <div class="grid-4" style="margin-bottom:10px;">
-        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mClaMedia">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mClaAlta">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mClaMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mClaBaja">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mClaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mClaAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mClaMedia">—</div></div>
       </div>
       <div class="chart-wrap h150"><canvas id="cGustoClasico"></canvas></div>
     </div>
-
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-title">Tajín Chamoy</div>
       <div class="grid-4" style="margin-bottom:10px;">
-        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mChamMedia">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mChamAlta">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mChamMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mChamBaja">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mChamMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mChamAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mChamMedia">—</div></div>
       </div>
       <div class="chart-wrap h150"><canvas id="cGustoChamoy"></canvas></div>
     </div>
@@ -200,10 +196,10 @@
     <div class="card" style="margin-bottom:10px;">
       <div class="card-title">Tajín Chile y Lima</div>
       <div class="grid-4" style="margin-bottom:10px;">
-        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mLimaMedia">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mLimaAlta">—</div></div>
-        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mLimaMed">—</div></div>
         <div class="mini-stat"><div class="mini-stat-label">No satisfechos (≤5)</div><div class="mini-stat-value red-dark" id="mLimaBaja">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Satisfechos (7+)</div><div class="mini-stat-value" id="mLimaMed">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Muy satisfechos (9+)</div><div class="mini-stat-value green" id="mLimaAlta">—</div></div>
+        <div class="mini-stat"><div class="mini-stat-label">Media</div><div class="mini-stat-value blue" id="mLimaMedia">—</div></div>
       </div>
       <div class="chart-wrap h150"><canvas id="cGustoLima"></canvas></div>
     </div>
@@ -236,7 +232,7 @@
     const MID = '#888888';
     const BLUE_PAL = ['#1F3A5F','#2E5490','#3D6EB8','#6A9BD1','#97BDE6','#C3D9F3','#DDEAF8'];
     const FREQ_ORDER = ['Una vez a la semana','Una vez cada 15 días','Una vez al mes','De vez en cuando','Nunca o casi nunca'];
-    const AGE_RANGES = ['-17','18-24','25-34','35-44','45-54','55-64'];
+    const AGE_RANGES = ['18-24','25-34','35-44','45-54','55-64'];
 
     let allRows=[], colHeaders=[], charts={};
 
@@ -244,7 +240,7 @@
 
     function pct(n, total){ return total>0?Math.round(n/total*100):0; }
 
-    function makeBar(id, labels, data, colors, horizontal, showPctLabels, hideXAxis){
+    function makeBar(id, labels, data, colors, horizontal, showPctLabels, hideXAxis, hideYAxis){
       destroyChart(id);
       const ctx=document.getElementById(id); if(!ctx) return;
       const total = data.reduce((a,b)=>a+b,0);
@@ -269,6 +265,7 @@
               grid:{color:'rgba(0,0,0,0.04)'}, beginAtZero:true
             },
             y:{
+              display: !hideYAxis,
               ticks:{color:MID,font:{size:9,family:'Figtree'}},
               grid:{color: hideXAxis?'rgba(0,0,0,0)':'rgba(0,0,0,0.04)'},
               beginAtZero:true
@@ -368,10 +365,10 @@
       document.getElementById('genderLegend').innerHTML=[{l:'Femenino',c:'#E8001D',v:femC},{l:'Masculino',c:'#1F3A5F',v:masC}].map(x=>`<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span style="color:${x.c}">${x.l} ${fmTotal>0?pct(x.v,fmTotal):0}%</span></div>`).join('');
 
       // Edad con nuevos rangos
-      const ageG={'-17':0,'18-24':0,'25-34':0,'35-44':0,'45-54':0,'55-64':0};
+      const ageG={'18-24':0,'25-34':0,'35-44':0,'45-54':0,'55-64':0};
       getCol(rows,'user_age').forEach(a=>{ const g=ageGroup(a); if(g&&ageG[g]!==undefined) ageG[g]++; });
       const edadE=Object.entries(ageG).filter(e=>e[1]>0);
-      makeBar('cEdad',edadE.map(e=>e[0]),edadE.map(e=>e[1]),edadE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),false,true,false);
+      makeBar('cEdad',edadE.map(e=>e[0]),edadE.map(e=>e[1]),edadE.map((_,i)=>BLUE_PAL[Math.min(i,BLUE_PAL.length-1)]),false,true,false,true);
 
       // Conocía — donut con % "No" en el centro + leyenda abajo
       const knewMap={};
@@ -387,10 +384,11 @@
       document.getElementById('conociaNoP').textContent=pct(noCount,total)+'%';
       const knewE=Object.entries(knewMap).sort((a,b)=>b[1]-a[1]);
       const conociaColors=['#2E5490','#6A9BD1','#CCCCCC'];
+      const conociaColorMap=(e,i)=>e[0]==='No la conocía'?'#E8001D':(conociaColors[i]||'#ccc');
       destroyChart('cConocia');
       const cCtx=document.getElementById('cConocia');
-      if(cCtx){ charts['cConocia']=new Chart(cCtx,{ type:'doughnut', data:{ labels:knewE.map(e=>e[0]), datasets:[{ data:knewE.map(e=>e[1]), backgroundColor:conociaColors, borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'65%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
-      document.getElementById('conociaLegend').innerHTML=knewE.map((e,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${conociaColors[i]||'#ccc'}"></div><span style="font-size:10px;color:#444">${e[0]} — ${pct(e[1],total)}%</span></div>`).join('');
+      if(cCtx){ charts['cConocia']=new Chart(cCtx,{ type:'doughnut', data:{ labels:knewE.map(e=>e[0]), datasets:[{ data:knewE.map(e=>e[1]), backgroundColor:knewE.map(conociaColorMap), borderColor:'#fff', borderWidth:2 }] }, options:{ responsive:false, cutout:'65%', plugins:{ legend:{display:false}, tooltip:{enabled:true}, datalabels:false } } }); }
+      document.getElementById('conociaLegend').innerHTML=knewE.map((e,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${conociaColorMap(e,i)}"></div><span style="font-size:10px;color:${e[0]==='No la conocía'?'#E8001D':'#444'};font-weight:${e[0]==='No la conocía'?'700':'400'}">${e[0]} — ${pct(e[1],total)}%</span></div>`).join('');
 
       // Picante — orden fijo
       const picM=countSingle(getCol(rows,'picante'));
