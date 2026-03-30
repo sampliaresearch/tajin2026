@@ -57,9 +57,10 @@
     .mini-stat-value { font-size: 18px; font-weight: 900; color: var(--s-black); line-height: 1; }
     .mini-stat-value.blue { color: var(--s-black); }
     .mini-stat-value.green { color: #1a7a3a; }
-    .mini-stat-value.teal { background: linear-gradient(135deg,#1a5f8a,#1a7a3a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .mini-stat-value.teal { background: linear-gradient(135deg,#144798,#197A3A); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     .mini-stat-value.orange { color: #b85c00; }
-    .mini-stat-value.red-dark { color: #CCCCCC; }
+    .mini-stat-value.red-dark { color: #666666; }
+
 
     /* Gender donut */
     .gender-donut-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 150px; gap: 10px; }
@@ -85,14 +86,16 @@
     .insights-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 12px; }
     .insight-card { background: var(--s-white); border: 1px solid var(--s-border); border-radius: var(--radius); padding: 1rem 1.25rem; position: relative; overflow: hidden; }
     .insight-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-    .insight-card.ins-blue::before  { background: var(--b2); }
-    .insight-card.ins-green::before { background: #1a7a3a; }
-    .insight-card.ins-red::before   { background: var(--s-red); }
+    .insight-card.ins-blue::before  { background: var(--b3); }
+    .insight-card.ins-green::before { background: var(--b4); }
+    .insight-card.ins-red::before   { background: var(--b5); }
     .insight-icon { font-size: 22px; margin-bottom: 6px; }
     .insight-title { font-size: 11px; font-weight: 700; color: var(--s-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
     .insight-body { font-size: 13px; font-weight: 500; color: var(--s-black); line-height: 1.45; }
     .insight-body strong { font-weight: 800; }
     @media (max-width:700px){ .insights-grid { grid-template-columns: 1fr; } }
+
+    .footer { text-align: center; }
 
     @media (max-width: 700px) {
       .kpi-row { grid-template-columns: 1fr 1fr; }
@@ -101,6 +104,8 @@
       .header { padding: 0 1rem; } .content { padding: 1rem; } .last-update { display: none; }
     }
   </style>
+</head>
+<body>
 </head>
 <body>
   <div class="header">
@@ -237,17 +242,17 @@
     <div class="section-label">Insights destacados</div>
     <div class="insights-grid">
       <div class="insight-card ins-blue">
-        <div class="insight-icon">🏆</div>
+        <div class="insight-icon"><img src="https://iconic.app/icons/iconic/png/white/star.png" alt="star" style="width:22px; height:22px; filter: invert(1);"></div>
         <div class="insight-title">Producto más valorado</div>
         <div class="insight-body" id="insightTop">—</div>
       </div>
       <div class="insight-card ins-green">
-        <div class="insight-icon">😊</div>
+        <div class="insight-icon"><img src="https://iconic.app/icons/iconic/png/white/heart.png" alt="heart" style="width:22px; height:22px; filter: invert(1);"></div>
         <div class="insight-title">Satisfacción general</div>
         <div class="insight-body" id="insightSat">—</div>
       </div>
       <div class="insight-card ins-red">
-        <div class="insight-icon">📣</div>
+        <div class="insight-icon"><img src="https://iconic.app/icons/iconic/png/white/announcement.png" alt="announcement" style="width:22px; height:22px; filter: invert(1);"></div>
         <div class="insight-title">Conocimiento de marca</div>
         <div class="insight-body" id="insightBrand">—</div>
       </div>
